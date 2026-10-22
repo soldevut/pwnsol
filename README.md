@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://pwnsol.vercel.app"><img src="https://img.shields.io/badge/Live%20Sentinel-pwnsol.vercel.app-00F5A0?style=for-the-badge&logo=googlechrome&logoColor=black" alt="Live Sentinel" /></a>
+  <a href="https://pwnsol.xyz"><img src="https://img.shields.io/badge/Live%20Sentinel-pwnsol.xyz-FF5A24?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Sentinel" /></a>
   <a href="https://solana.com"><img src="https://img.shields.io/badge/Solana-Mainnet--Ready-14F195?style=for-the-badge&logo=solana" alt="Solana" /></a>
   <img src="https://img.shields.io/badge/Security%20Audits-14%20Nodes%20Live-brightgreen?style=for-the-badge" alt="Nodes" />
   <img src="https://img.shields.io/badge/License-Apache--2.0%20%2F%20MIT-blue?style=for-the-badge" alt="License" />
