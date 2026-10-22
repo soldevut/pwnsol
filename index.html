@@ -177,8 +177,9 @@ nav { display: flex; align-items: center; gap: 6px; }
 
 /* Center Text Badge */
 .hero-content {
-  position: relative; z-index: 3; text-align: center; pointer-events: none;
+  position: relative; z-index: 3; text-align: center;
   max-width: 760px; padding: 0 20px; margin-top: 190px;
+  pointer-events: none;
 }
 .hero-tag {
   display: inline-flex; align-items: center; gap: 8px;
@@ -186,7 +187,13 @@ nav { display: flex; align-items: center; gap: 6px; }
   color: #E2E8F0; background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 6px 16px; border-radius: 99px; margin-bottom: 16px;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px); pointer-events: auto; cursor: pointer;
+  transition: all .2s;
+}
+.hero-tag:hover {
+  background: rgba(255, 90, 36, 0.12);
+  border-color: rgba(255, 90, 36, 0.4);
+  box-shadow: 0 0 20px rgba(255, 90, 36, 0.2);
 }
 .hero-tag span.pip {
   width: 6px; height: 6px; border-radius: 50%; background: var(--ember-accent);
@@ -195,6 +202,7 @@ nav { display: flex; align-items: center; gap: 6px; }
 .hero-content h1 {
   font-size: clamp(38px, 6vw, 66px); font-weight: 800; line-height: 1.08;
   letter-spacing: -0.035em; color: var(--text-main); text-wrap: balance;
+  pointer-events: auto; user-select: none;
 }
 .hero-content h1 span.gradient {
   background: var(--gradient-text); -webkit-background-clip: text; background-clip: text;
@@ -203,6 +211,23 @@ nav { display: flex; align-items: center; gap: 6px; }
 .hero-content p {
   color: var(--text-secondary); font-size: clamp(15px, 2vw, 18px);
   max-width: 620px; margin: 12px auto 0; line-height: 1.5;
+  pointer-events: auto;
+}
+
+/* Interactive Cursor Text Effects */
+.scramble-word {
+  display: inline-block;
+  cursor: pointer;
+  transition: color 0.15s ease, transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), text-shadow 0.2s ease;
+}
+.scramble-word:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 20px #FF5A24, 0 0 45px rgba(255, 90, 36, 0.8);
+  transform: translateY(-3px) scale(1.04);
+}
+.scramble-word.active-scramble {
+  color: #FF5A24 !important;
+  text-shadow: 0 0 15px #FF5A24;
 }
 
 /* ========================================================
@@ -688,7 +713,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val">0.00%</div>
+          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">0.00%</div>
           <div class="tile-lbl">Self-Slippage Risk</div>
         </div>
       </div>
@@ -698,7 +723,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val">Revoked</div>
+          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">Revoked</div>
           <div class="tile-lbl">Freeze Guard Sentinel</div>
         </div>
       </div>
@@ -709,7 +734,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val">100%</div>
+          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">100%</div>
           <div class="tile-lbl">MEV Defense Verified</div>
         </div>
       </div>
@@ -719,7 +744,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val">Verified</div>
+          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">Verified</div>
           <div class="tile-lbl">Pyth Oracle Stream</div>
         </div>
       </div>
@@ -729,7 +754,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val">14 Nodes</div>
+          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">14 Nodes</div>
           <div class="tile-lbl">Mempool Sniffers</div>
         </div>
       </div>
@@ -737,10 +762,16 @@ footer a:hover { color: var(--text-main); }
 
     <!-- Center Headline Overlay -->
     <div class="hero-content">
-      <div class="hero-tag">
-        <span class="pip"></span> WEB3 EXPLOIT SENTINEL
+      <div class="hero-tag" onmouseenter="scrambleWord(this.querySelector('.tag-txt'))">
+        <span class="pip"></span> <span class="tag-txt">WEB3 EXPLOIT SENTINEL</span>
       </div>
-      <h1>What's Getting Pwned<br>on <span class="gradient">Solana</span>.</h1>
+      <h1>
+        <span class="scramble-word" onmouseenter="scrambleWord(this)">What's</span>
+        <span class="scramble-word" onmouseenter="scrambleWord(this)">Getting</span>
+        <span class="scramble-word" onmouseenter="scrambleWord(this)">Pwned</span><br>
+        <span class="scramble-word" onmouseenter="scrambleWord(this)">on</span>
+        <span class="gradient scramble-word" onmouseenter="scrambleWord(this)">Solana</span>.
+      </h1>
       <p>Real-time exploit monitor, wallet drainer blacklist, and 1-click token security scanner for Solana developers and traders.</p>
     </div>
 
@@ -1166,35 +1197,65 @@ let isUserDragging = false, lastX = 0, lastY = 0;
   mainGroup = new THREE.Group();
   scene.add(mainGroup);
 
-  // 1. Central Luminous Sphere Core
-  const sphereGeo = new THREE.IcosahedronGeometry(2.2, 3);
-  const sphereMat = new THREE.MeshBasicMaterial({
-    color: 0xFF5A24,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.55
-  });
-  innerCore = new THREE.Mesh(sphereGeo, sphereMat);
-  mainGroup.add(innerCore);
+  // 1. Organic Fluid Quantum Particle Swarm (Curvaceous, Smooth, No Sharp Straight Lines)
+  const swarmCount = 1100;
+  const swarmPos = new Float32Array(swarmCount * 3);
+  const swarmBaseCoords = [];
+  const phiGolden = (1 + Math.sqrt(5)) / 2;
 
-  // Inner Glow Core
-  const glowGeo = new THREE.SphereGeometry(1.6, 24, 24);
-  const glowMat = new THREE.MeshBasicMaterial({
+  for (let i = 0; i < swarmCount; i++) {
+    const theta = 2 * Math.PI * i / phiGolden;
+    const phi = Math.acos(1 - 2 * (i + 0.5) / swarmCount);
+    const r = 2.45;
+    swarmBaseCoords.push({ theta, phi, r });
+
+    swarmPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+    swarmPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    swarmPos[i * 3 + 2] = r * Math.cos(phi);
+  }
+
+  const swarmGeo = new THREE.BufferGeometry();
+  swarmGeo.setAttribute('position', new THREE.BufferAttribute(swarmPos, 3));
+  const swarmMat = new THREE.PointsMaterial({
+    size: 0.08,
+    color: 0xFF5A24,
+    transparent: true,
+    opacity: 0.85,
+    blending: THREE.AdditiveBlending
+  });
+  const swarmMesh = new THREE.Points(swarmGeo, swarmMat);
+  mainGroup.add(swarmMesh);
+
+  // 2. High-Subdivision Smooth Luminous Core (Perfect Round Sphere, Zero Polygonal Facets)
+  const coreGeo = new THREE.SphereGeometry(1.7, 64, 64);
+  const coreMat = new THREE.MeshBasicMaterial({
     color: 0xFF2A55,
     transparent: true,
-    opacity: 0.25
+    opacity: 0.35,
+    blending: THREE.AdditiveBlending
   });
-  const innerGlow = new THREE.Mesh(glowGeo, glowMat);
-  mainGroup.add(innerGlow);
+  innerCore = new THREE.Mesh(coreGeo, coreMat);
+  mainGroup.add(innerCore);
 
-  // 2. Delicate Gyroscope Orbital Rings
-  const r1Geo = new THREE.TorusGeometry(3.9, 0.02, 16, 120);
-  const r1Mat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0.3 });
+  // Soft Ambient Amber Atmosphere
+  const haloGeo = new THREE.SphereGeometry(2.1, 48, 48);
+  const haloMat = new THREE.MeshBasicMaterial({
+    color: 0xFFA024,
+    transparent: true,
+    opacity: 0.16,
+    blending: THREE.AdditiveBlending
+  });
+  const haloMesh = new THREE.Mesh(haloGeo, haloMat);
+  mainGroup.add(haloMesh);
+
+  // 3. Delicate Curvaceous Gyroscope Rings (180 Segments - Silky Smooth Arcs)
+  const r1Geo = new THREE.TorusGeometry(3.9, 0.015, 16, 180);
+  const r1Mat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0.28 });
   outerRing1 = new THREE.Mesh(r1Geo, r1Mat);
   mainGroup.add(outerRing1);
 
-  const r2Geo = new THREE.TorusGeometry(4.4, 0.02, 16, 120);
-  const r2Mat = new THREE.MeshBasicMaterial({ color: 0xFF6B35, transparent: true, opacity: 0.35 });
+  const r2Geo = new THREE.TorusGeometry(4.4, 0.015, 16, 180);
+  const r2Mat = new THREE.MeshBasicMaterial({ color: 0xFF6B35, transparent: true, opacity: 0.32 });
   outerRing2 = new THREE.Mesh(r2Geo, r2Mat);
   outerRing2.rotation.x = Math.PI / 2.3;
   mainGroup.add(outerRing2);
@@ -1300,6 +1361,18 @@ let isUserDragging = false, lastX = 0, lastY = 0;
       mainGroup.rotation.x += (targetRotY - mainGroup.rotation.x * 0.3) * 0.03;
     }
 
+    // Smooth fluid wave displacement across swarm particles (organic, breathing, zero sharp lines)
+    const positions = swarmGeo.attributes.position.array;
+    for (let i = 0; i < swarmCount; i++) {
+      const { theta, phi, r } = swarmBaseCoords[i];
+      const wave = Math.sin(theta * 3 + elapsed * 2) * Math.cos(phi * 2 + elapsed * 1.5) * 0.22;
+      const curR = r + wave;
+      positions[i * 3] = curR * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = curR * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = curR * Math.cos(phi);
+    }
+    swarmGeo.attributes.position.needsUpdate = true;
+
     outerRing1.rotation.x += 0.005;
     outerRing2.rotation.z += 0.006;
 
@@ -1323,6 +1396,37 @@ let isUserDragging = false, lastX = 0, lastY = 0;
   }
   animate();
 })();
+
+// ========================================================
+// INTERACTIVE CRYPTOGRAPHIC TEXT SCRAMBLER (CURSOR INTERACTION)
+// ========================================================
+const HACKER_GLYPHS = '0123456789ABCDEF!@#$%&*?~<>/+';
+
+function scrambleWord(el) {
+  if (!el || el._isScrambling) return;
+  el._isScrambling = true;
+  AudioFX.click();
+
+  const original = el.getAttribute('data-original') || el.innerText.trim();
+  if (!el.getAttribute('data-original')) el.setAttribute('data-original', original);
+
+  let step = 0;
+  const maxSteps = 9;
+  const interval = setInterval(() => {
+    el.innerText = original.split('').map((ch, idx) => {
+      if (ch === ' ' || ch === '.' || ch === '%' || ch === '\n') return ch;
+      if (step > maxSteps - (original.length - idx) * 1.2) return original[idx];
+      return HACKER_GLYPHS[Math.floor(Math.random() * HACKER_GLYPHS.length)];
+    }).join('');
+
+    step++;
+    if (step >= maxSteps) {
+      clearInterval(interval);
+      el.innerText = original;
+      el._isScrambling = false;
+    }
+  }, 32);
+}
 
 function triggerSonarPulse() {
   AudioFX.sonar();
