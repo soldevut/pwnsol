@@ -214,20 +214,21 @@ nav { display: flex; align-items: center; gap: 6px; }
   pointer-events: auto;
 }
 
-/* Interactive Cursor Text Effects */
-.scramble-word {
+/* Interactive Cursor Text Effects - Smooth Magnetic Ripple, Zero Layout Shift */
+.magnetic-word {
   display: inline-block;
   cursor: pointer;
-  transition: color 0.15s ease, transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), text-shadow 0.2s ease;
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.25s ease, color 0.2s ease;
+  will-change: transform;
 }
-.scramble-word:hover {
+.magnetic-word:hover {
+  transform: translateY(-4px) scale(1.05);
   color: #FFFFFF;
-  text-shadow: 0 0 20px #FF5A24, 0 0 45px rgba(255, 90, 36, 0.8);
-  transform: translateY(-3px) scale(1.04);
-}
-.scramble-word.active-scramble {
-  color: #FF5A24 !important;
-  text-shadow: 0 0 15px #FF5A24;
+  text-shadow: 
+    0 0 20px rgba(255, 90, 36, 0.9),
+    0 0 45px rgba(255, 90, 36, 0.5),
+    0 0 70px rgba(255, 42, 85, 0.3);
 }
 
 /* ========================================================
@@ -713,7 +714,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">0.00%</div>
+          <div class="tile-val">0.00%</div>
           <div class="tile-lbl">Self-Slippage Risk</div>
         </div>
       </div>
@@ -723,7 +724,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">Revoked</div>
+          <div class="tile-val">Revoked</div>
           <div class="tile-lbl">Freeze Guard Sentinel</div>
         </div>
       </div>
@@ -734,7 +735,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">100%</div>
+          <div class="tile-val">100%</div>
           <div class="tile-lbl">MEV Defense Verified</div>
         </div>
       </div>
@@ -744,7 +745,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">Verified</div>
+          <div class="tile-val">Verified</div>
           <div class="tile-lbl">Pyth Oracle Stream</div>
         </div>
       </div>
@@ -754,7 +755,7 @@ footer a:hover { color: var(--text-main); }
       <div class="tile-3d-glass">
         <div class="tile-inner-content">
           <div class="tile-dots"><span></span><span></span><span></span></div>
-          <div class="tile-val scramble-word" onmouseenter="scrambleWord(this)">14 Nodes</div>
+          <div class="tile-val">14 Nodes</div>
           <div class="tile-lbl">Mempool Sniffers</div>
         </div>
       </div>
@@ -762,15 +763,15 @@ footer a:hover { color: var(--text-main); }
 
     <!-- Center Headline Overlay -->
     <div class="hero-content">
-      <div class="hero-tag" onmouseenter="scrambleWord(this.querySelector('.tag-txt'))">
+      <div class="hero-tag">
         <span class="pip"></span> <span class="tag-txt">WEB3 EXPLOIT SENTINEL</span>
       </div>
       <h1>
-        <span class="scramble-word" onmouseenter="scrambleWord(this)">What's</span>
-        <span class="scramble-word" onmouseenter="scrambleWord(this)">Getting</span>
-        <span class="scramble-word" onmouseenter="scrambleWord(this)">Pwned</span><br>
-        <span class="scramble-word" onmouseenter="scrambleWord(this)">on</span>
-        <span class="gradient scramble-word" onmouseenter="scrambleWord(this)">Solana</span>.
+        <span class="magnetic-word" onmouseenter="AudioFX.click()">What's</span>
+        <span class="magnetic-word" onmouseenter="AudioFX.click()">Getting</span>
+        <span class="magnetic-word" onmouseenter="AudioFX.click()">Pwned</span><br>
+        <span class="magnetic-word" onmouseenter="AudioFX.click()">on</span>
+        <span class="gradient magnetic-word" onmouseenter="AudioFX.click()">Solana</span>.
       </h1>
       <p>Real-time exploit monitor, wallet drainer blacklist, and 1-click token security scanner for Solana developers and traders.</p>
     </div>
@@ -1398,35 +1399,43 @@ let isUserDragging = false, lastX = 0, lastY = 0;
 })();
 
 // ========================================================
-// INTERACTIVE CRYPTOGRAPHIC TEXT SCRAMBLER (CURSOR INTERACTION)
+// SILKY SMOOTH CURSOR MAGNETIC TEXT RIPPLE (ZERO LAYOUT SHIFT)
 // ========================================================
-const HACKER_GLYPHS = '0123456789ABCDEF!@#$%&*?~<>/+';
+(function initMagneticText() {
+  const words = document.querySelectorAll('.magnetic-word');
+  const container = document.querySelector('.hero-viewport');
+  if (!container || !words.length) return;
 
-function scrambleWord(el) {
-  if (!el || el._isScrambling) return;
-  el._isScrambling = true;
-  AudioFX.click();
+  container.addEventListener('mousemove', (e) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
 
-  const original = el.getAttribute('data-original') || el.innerText.trim();
-  if (!el.getAttribute('data-original')) el.setAttribute('data-original', original);
+    words.forEach(word => {
+      const rect = word.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dist = Math.hypot(mouseX - cx, mouseY - cy);
 
-  let step = 0;
-  const maxSteps = 9;
-  const interval = setInterval(() => {
-    el.innerText = original.split('').map((ch, idx) => {
-      if (ch === ' ' || ch === '.' || ch === '%' || ch === '\n') return ch;
-      if (step > maxSteps - (original.length - idx) * 1.2) return original[idx];
-      return HACKER_GLYPHS[Math.floor(Math.random() * HACKER_GLYPHS.length)];
-    }).join('');
+      if (dist < 160) {
+        const factor = (1 - dist / 160);
+        const ty = -factor * 6;
+        const scale = 1 + factor * 0.05;
+        word.style.transform = `translateY(${ty}px) scale(${scale})`;
+        word.style.textShadow = `0 0 ${20 * factor}px rgba(255, 90, 36, ${0.85 * factor}), 0 0 ${40 * factor}px rgba(255, 90, 36, ${0.4 * factor})`;
+      } else {
+        word.style.transform = '';
+        word.style.textShadow = '';
+      }
+    });
+  });
 
-    step++;
-    if (step >= maxSteps) {
-      clearInterval(interval);
-      el.innerText = original;
-      el._isScrambling = false;
-    }
-  }, 32);
-}
+  container.addEventListener('mouseleave', () => {
+    words.forEach(word => {
+      word.style.transform = '';
+      word.style.textShadow = '';
+    });
+  });
+})();
 
 function triggerSonarPulse() {
   AudioFX.sonar();
