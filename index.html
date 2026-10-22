@@ -160,11 +160,13 @@ nav { display: flex; align-items: center; gap: 6px; }
    FLAGSHIP 3D HERO STAGE (LUXURY INTERACTIVE SENTINEL CORE)
    ======================================================== */
 .hero-viewport {
-  position: relative; width: 100%; min-height: 560px; margin-top: 24px;
+  position: relative; width: 100%; min-height: 600px; margin-top: 24px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 24px; overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.06);
   background: radial-gradient(circle at 50% 50%, rgba(18, 22, 34, 0.4) 0%, rgba(6, 7, 11, 0.95) 100%);
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
 
 #three-canvas {
@@ -203,46 +205,153 @@ nav { display: flex; align-items: center; gap: 6px; }
   max-width: 620px; margin: 12px auto 0; line-height: 1.5;
 }
 
-/* Floating Glass Telemetry Chips (Around 3D Orb) */
-.floating-chip {
+/* ========================================================
+   TRUE 3D EXTRUDED GLASS TILES (MATCHING USER'S 3D REFERENCE)
+   ======================================================== */
+.tile-3d-wrap {
   position: absolute; z-index: 4;
-  background: rgba(14, 18, 28, 0.55);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px; padding: 14px 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  pointer-events: auto; cursor: default;
-  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  pointer-events: auto;
 }
-.floating-chip:hover {
-  transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-}
-.chip-dots { display: flex; gap: 4px; margin-bottom: 6px; }
-.chip-dots span {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--ember-accent);
-  box-shadow: 0 0 6px var(--ember-accent);
-}
-.chip-dots span:nth-child(2) { opacity: 0.6; }
-.chip-dots span:nth-child(3) { opacity: 0.3; }
 
-.chip-val { font-size: 20px; font-weight: 800; color: var(--text-main); line-height: 1.1; }
-.chip-lbl { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 3px; }
-
-.pos-1 { top: 12%; left: 6%; animation: float1 7s ease-in-out infinite; }
-.pos-2 { top: 16%; right: 6%; animation: float2 8s ease-in-out infinite; }
-.pos-3 { bottom: 18%; left: 7%; animation: float2 6.5s ease-in-out infinite; }
-.pos-4 { bottom: 16%; right: 7%; animation: float1 7.5s ease-in-out infinite; }
-
-@keyframes float1 {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+.tile-3d-glass {
+  position: relative;
+  border-radius: 18px;
+  padding: 15px 22px;
+  min-width: 180px;
+  background: linear-gradient(145deg, rgba(20, 26, 40, 0.72) 0%, rgba(9, 13, 20, 0.88) 100%);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
 }
-@keyframes float2 {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
+
+/* Glass Specular Sheen across top face */
+.tile-3d-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.38) 0%,
+    rgba(255, 255, 255, 0.12) 30%,
+    rgba(255, 255, 255, 0.01) 48%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* LEFT TILES (Extruded and angled in 3D perspective towards the center) */
+.tile-side-left .tile-3d-glass {
+  transform: rotateY(24deg) rotateX(10deg) rotateZ(-3deg);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-top-color: rgba(255, 255, 255, 0.5);
+  border-left-color: rgba(255, 255, 255, 0.45);
+  /* 3D Physical Extrusion layers to the right/bottom */
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.45),
+    inset -1px -1px 0 rgba(255, 255, 255, 0.05),
+    1.5px 1.5px 0 rgba(18, 24, 36, 0.95),
+    3px 3px 0 rgba(14, 19, 28, 0.95),
+    5px 5px 0 rgba(10, 14, 22, 0.95),
+    7px 7px 0 rgba(8, 11, 18, 0.95),
+    9px 9px 1px rgba(0, 0, 0, 0.7),
+    16px 24px 38px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(255, 90, 36, 0.1);
+}
+.tile-side-left:hover .tile-3d-glass {
+  transform: rotateY(16deg) rotateX(5deg) rotateZ(-1deg) translateZ(40px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.38);
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.65),
+    2px 2px 0 rgba(22, 30, 46, 0.95),
+    5px 5px 0 rgba(18, 24, 36, 0.95),
+    8px 8px 0 rgba(12, 16, 26, 0.95),
+    12px 12px 1px rgba(0, 0, 0, 0.7),
+    22px 34px 50px rgba(0, 0, 0, 0.9),
+    0 0 45px rgba(255, 90, 36, 0.25);
+}
+
+/* RIGHT TILES (Extruded and angled in 3D perspective towards the center) */
+.tile-side-right .tile-3d-glass {
+  transform: rotateY(-24deg) rotateX(10deg) rotateZ(3deg);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-top-color: rgba(255, 255, 255, 0.5);
+  border-right-color: rgba(255, 255, 255, 0.45);
+  /* 3D Physical Extrusion layers to the left/bottom */
+  box-shadow: 
+    inset -1px 1px 0 rgba(255, 255, 255, 0.45),
+    inset 1px -1px 0 rgba(255, 255, 255, 0.05),
+    -1.5px 1.5px 0 rgba(18, 24, 36, 0.95),
+    -3px 3px 0 rgba(14, 19, 28, 0.95),
+    -5px 5px 0 rgba(10, 14, 22, 0.95),
+    -7px 7px 0 rgba(8, 11, 18, 0.95),
+    -9px 9px 1px rgba(0, 0, 0, 0.7),
+    -16px 24px 38px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(255, 90, 36, 0.1);
+}
+.tile-side-right:hover .tile-3d-glass {
+  transform: rotateY(-16deg) rotateX(5deg) rotateZ(1deg) translateZ(40px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.38);
+  box-shadow: 
+    inset -1px 1px 0 rgba(255, 255, 255, 0.65),
+    -2px 2px 0 rgba(22, 30, 46, 0.95),
+    -5px 5px 0 rgba(18, 24, 36, 0.95),
+    -8px 8px 0 rgba(12, 16, 26, 0.95),
+    -12px 12px 1px rgba(0, 0, 0, 0.7),
+    -22px 34px 50px rgba(0, 0, 0, 0.9),
+    0 0 45px rgba(255, 90, 36, 0.25);
+}
+
+/* 3D Content Floating Out */
+.tile-inner-content {
+  position: relative;
+  z-index: 2;
+  transform: translateZ(28px);
+  transform-style: preserve-3d;
+}
+
+/* Glowing Neon LED dots matching reference image */
+.tile-dots {
+  display: flex; gap: 5px; margin-bottom: 8px;
+}
+.tile-dots span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ember-accent);
+  box-shadow: 0 0 8px var(--ember-accent), 0 0 16px rgba(255, 90, 36, 0.9);
+}
+.tile-dots span:nth-child(2) { opacity: 0.8; }
+.tile-dots span:nth-child(3) { opacity: 0.45; }
+
+.tile-val {
+  font-size: 22px; font-weight: 800; color: #FFFFFF; line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+  letter-spacing: -0.02em;
+}
+.tile-lbl {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* 5 3D Positions Matching Reference Composition */
+.pos-l1 { top: 12%; left: 5%; animation: float3DA 6.5s ease-in-out infinite; }
+.pos-l2 { bottom: 16%; left: 6%; animation: float3DB 7s ease-in-out infinite; }
+.pos-r1 { top: 10%; right: 5%; animation: float3DB 6.8s ease-in-out infinite; }
+.pos-r2 { top: 38%; right: 4%; animation: float3DA 7.2s ease-in-out infinite; }
+.pos-r3 { bottom: 14%; right: 6%; animation: float3DB 7.6s ease-in-out infinite; }
+
+@keyframes float3DA {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes float3DB {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(12px); }
 }
 
 /* Sleek Minimal 3D Controls */
@@ -264,7 +373,7 @@ nav { display: flex; align-items: center; gap: 6px; }
 .v-btn.active { background: rgba(255, 255, 255, 0.12); color: var(--text-main); }
 
 @media (max-width: 900px) {
-  .floating-chip { display: none; }
+  .tile-3d-wrap { display: none; }
   .hero-viewport { min-height: 480px; }
   .hero-content { margin-top: 140px; }
 }
@@ -573,29 +682,57 @@ footer a:hover { color: var(--text-main); }
     <!-- Three.js Canvas Container -->
     <div id="three-canvas"></div>
 
-    <!-- Floating 3D Telemetry Badges (Like the reference visual) -->
-    <div class="floating-chip pos-1">
-      <div class="chip-dots"><span></span><span></span><span></span></div>
-      <div class="chip-val">0.00%</div>
-      <div class="chip-lbl">Self-Slippage Risk</div>
+    <!-- 3D Extruded Glass Tiles (Matching Reference Visual Exactly) -->
+    <!-- Left Tiles (Tilted in 3D perspective towards center) -->
+    <div class="tile-3d-wrap tile-side-left pos-l1">
+      <div class="tile-3d-glass">
+        <div class="tile-inner-content">
+          <div class="tile-dots"><span></span><span></span><span></span></div>
+          <div class="tile-val">0.00%</div>
+          <div class="tile-lbl">Self-Slippage Risk</div>
+        </div>
+      </div>
     </div>
 
-    <div class="floating-chip pos-2">
-      <div class="chip-dots"><span></span><span></span><span></span></div>
-      <div class="chip-val">100%</div>
-      <div class="chip-lbl">MEV Defense Verified</div>
+    <div class="tile-3d-wrap tile-side-left pos-l2">
+      <div class="tile-3d-glass">
+        <div class="tile-inner-content">
+          <div class="tile-dots"><span></span><span></span><span></span></div>
+          <div class="tile-val">Revoked</div>
+          <div class="tile-lbl">Freeze Guard Sentinel</div>
+        </div>
+      </div>
     </div>
 
-    <div class="floating-chip pos-3">
-      <div class="chip-dots"><span></span><span></span><span></span></div>
-      <div class="chip-val">Revoked</div>
-      <div class="chip-lbl">Freeze Authority Guard</div>
+    <!-- Right Tiles (Tilted in 3D perspective towards center) -->
+    <div class="tile-3d-wrap tile-side-right pos-r1">
+      <div class="tile-3d-glass">
+        <div class="tile-inner-content">
+          <div class="tile-dots"><span></span><span></span><span></span></div>
+          <div class="tile-val">100%</div>
+          <div class="tile-lbl">MEV Defense Verified</div>
+        </div>
+      </div>
     </div>
 
-    <div class="floating-chip pos-4">
-      <div class="chip-dots"><span></span><span></span><span></span></div>
-      <div class="chip-val">14 Nodes</div>
-      <div class="chip-lbl">Mempool Sniffers</div>
+    <div class="tile-3d-wrap tile-side-right pos-r2">
+      <div class="tile-3d-glass">
+        <div class="tile-inner-content">
+          <div class="tile-dots"><span></span><span></span><span></span></div>
+          <div class="tile-val">Verified</div>
+          <div class="tile-lbl">Pyth Oracle Stream</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tile-3d-wrap tile-side-right pos-r3">
+      <div class="tile-3d-glass">
+        <div class="tile-inner-content">
+          <div class="tile-dots"><span></span><span></span><span></span></div>
+          <div class="tile-val">14 Nodes</div>
+          <div class="tile-lbl">Mempool Sniffers</div>
+        </div>
+      </div>
     </div>
 
     <!-- Center Headline Overlay -->
@@ -1108,7 +1245,10 @@ let isUserDragging = false, lastX = 0, lastY = 0;
   const stars = new THREE.Points(partGeo, partMat);
   scene.add(stars);
 
-  // Drag interaction
+  // Drag interaction & 3D Tile Parallax
+  const leftTiles = document.querySelectorAll('.tile-side-left .tile-3d-glass');
+  const rightTiles = document.querySelectorAll('.tile-side-right .tile-3d-glass');
+
   container.addEventListener('mousedown', (e) => {
     isUserDragging = true;
     lastX = e.clientX;
@@ -1126,8 +1266,18 @@ let isUserDragging = false, lastX = 0, lastY = 0;
     } else {
       const rect = container.getBoundingClientRect();
       if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
-        targetRotX = ((e.clientX - rect.left) / rect.width - 0.5) * 0.6;
-        targetRotY = ((e.clientY - rect.top) / rect.height - 0.5) * 0.6;
+        const mx = ((e.clientX - rect.left) / rect.width - 0.5);
+        const my = ((e.clientY - rect.top) / rect.height - 0.5);
+        targetRotX = mx * 0.6;
+        targetRotY = my * 0.6;
+
+        // Dynamic 3D perspective parallax on extruded glass tiles
+        leftTiles.forEach(tile => {
+          tile.style.transform = `rotateY(${24 + mx * 8}deg) rotateX(${10 - my * 8}deg) rotateZ(-3deg)`;
+        });
+        rightTiles.forEach(tile => {
+          tile.style.transform = `rotateY(${-24 + mx * 8}deg) rotateX(${10 - my * 8}deg) rotateZ(3deg)`;
+        });
       }
     }
   });
